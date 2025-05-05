@@ -25,12 +25,7 @@ A simple, lightweight personal finance tracker that helps you manage your daily 
 ├── index.html
 ├── styles.css
 ├── script.js
-├── assets/
-│   └── icons, fonts, etc.
-└── screenshots/
-    ├── add-expense.png
-    ├── analytics.png
-    └── dark-mode.png
+
 ```
 
 ## 📖 How to Use
