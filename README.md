@@ -1,92 +1,56 @@
-Here's a sample `README.md` file for your **Expense Tracker Web App** project. This assumes your project includes the features you've shown: expense tracking, category filtering, theme toggling, localStorage, responsive layout with tabs (e.g., Expenses, Analytics, Settings).
+# 💰 Personal Finance Tracker
 
----
-
-```markdown
-# 💸 Expense Tracker Web App
-
-A lightweight, responsive expense tracker web application built using **HTML**, **CSS**, and **JavaScript**. Track your daily spending, filter by category, view monthly analytics, and switch between light/dark themes — all without a backend!
+A simple, lightweight personal finance tracker that helps you manage your daily expenses with an intuitive interface and clear analytics. Built with HTML, CSS, and JavaScript — no backend required!
 
 ## 🚀 Features
 
-- ✅ Add and delete expenses with custom title, amount, category, and date
-- ✅ Persistent data using `localStorage`
-- ✅ Filter expenses by category
-- ✅ View total and current month’s expenses
-- ✅ Responsive tabbed navigation (Expenses, Analytics, Settings)
-- ✅ Dark/light theme toggle with saved preference
-- ✅ Clean, mobile-friendly UI
+* 📝 Add and categorize expenses
+* 📊 View total and monthly spending
+* 📂 Filter expenses by category
+* 🌙 Toggle between light and dark themes
+* 📱 Mobile responsive UI
+* 🧠 Smart localStorage data persistence
+* ⚙️ Minimal settings tab
 
-## 📸 Screenshots
-
-| Expenses Tab | Analytics Tab | Settings Tab |
-|--------------|---------------|---------------|
-| ![expenses](screenshots/expenses.png) | ![analytics](screenshots/analytics.png) | ![settings](screenshots/settings.png) |
-
-> *(Place your screenshots in a `/screenshots` folder and adjust the paths as needed.)*
-
-## 📁 Folder Structure
-
-```
-
-/expense-tracker
-├── index.html
-├── style.css
-├── script.js
-├── /screenshots
-│   ├── expenses.png
-│   ├── analytics.png
-│   └── settings.png
-└── README.md
-
-````
-
-## 🛠️ How to Use
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/yourusername/expense-tracker.git
-   cd expense-tracker
-````
-
-2. **Open `index.html` in your browser:**
-
-   ```bash
-   open index.html
-   ```
-
-3. **Start tracking your expenses!**
-
-## 🧪 Technologies Used
+## ⚒️ Technologies Used
 
 * HTML5
-* CSS3 (with variables for theming)
-* Vanilla JavaScript (ES6)
-* `localStorage` for data persistence
+* CSS3 (Flexbox, Variables)
+* JavaScript (DOM Manipulation, localStorage)
 
-## 🌗 Theme Support
+## 📁 Project Structure
 
-This app supports both **light** and **dark** themes. Your preference is automatically saved and restored when you revisit.
+```
+📁 personal-finance-tracker/
+├── index.html
+├── styles.css
+├── script.js
+├── assets/
+│   └── icons, fonts, etc.
+└── screenshots/
+    ├── add-expense.png
+    ├── analytics.png
+    └── dark-mode.png
+```
 
-## 📌 Future Improvements (Ideas)
+## 📖 How to Use
 
-* Export expenses as CSV
-* Add pie chart or bar graph in analytics
-* Add recurring expenses or budgets
-* Sync with backend (Firebase or Supabase)
-* Progressive Web App (PWA) support
+1. Clone the repository:
 
-## 📄 License
+   ```bash
+   git clone https://github.com/navya-0510/personal-finance-tracker.git
+   ```
+2. Open `index.html` in your browser.
+3. Start tracking your expenses!
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+## 🌟 Contributing
+
+Contributions are welcome! Please fork the repo and submit a pull request with your improvements.
+
+## ✅ License
+
+This project is licensed under the MIT License. See the `LICENSE` file for details.
 
 ---
 
-> Made with ❤️ for personal finance tracking.
-
-```
-
----
-
-Would you like a live demo link or help deploying it on GitHub Pages?
-```
+Built with ❤️ by \navya-0510
