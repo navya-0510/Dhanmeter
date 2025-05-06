@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dhanmeter - Smart Expense Tracker</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -75,16 +73,10 @@
         <div class="category-filter" id="category-filter">
           <button class="category-btn active" data-category="all">All</button>
           <button class="category-btn" data-category="food">Food</button>
-          <button class="category-btn" data-category="transport">
-            Transport
-          </button>
-          <button class="category-btn" data-category="shopping">
-            Shopping
-          </button>
+          <button class="category-btn" data-category="transport">Transport</button>
+          <button class="category-btn" data-category="shopping">Shopping</button>
           <button class="category-btn" data-category="housing">Housing</button>
-          <button class="category-btn" data-category="entertainment">
-            Entertainment
-          </button>
+          <button class="category-btn" data-category="entertainment">Entertainment</button>
         </div>
 
         <div class="expense-list" id="expense-list">
@@ -95,8 +87,9 @@
       <div class="tab-content" id="analytics-tab" style="display: none">
         <div class="card">
           <h2 class="card-title">Spending Analytics</h2>
-          <div class="chart-placeholder">[Monthly Spending Chart]</div>
-          <div class="chart-placeholder">[Category Breakdown Chart]</div>
+          <div class="charts-container">
+            <canvas id="expenseChart" width="400" height="200"></canvas>
+          </div>
         </div>
       </div>
 
@@ -112,7 +105,7 @@
     <div class="tab-content" id="settings-tab" style="display: none">
       <div class="settings-container">
         <h2 class="card-title">Settings</h2>
-    
+
         <div class="form-group">
           <label for="monthly-budget">Monthly Budget (₹)</label>
           <input
@@ -123,12 +116,12 @@
           />
           <button class="btn" id="save-budget">Save Budget</button>
         </div>
-    
+
         <div class="form-group">
           <label>Theme</label>
           <button class="btn" id="toggle-theme">Toggle Light/Dark Mode</button>
         </div>
-    
+
         <div class="form-group">
           <label>Data</label>
           <button class="btn btn-danger" id="clear-data">Clear All Expenses</button>
@@ -143,6 +136,8 @@
       <button class="footer-btn" data-tab="settings">⚙️</button>
     </footer>
 
+    <!-- Chart.js and your main script -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
   </body>
 </html>

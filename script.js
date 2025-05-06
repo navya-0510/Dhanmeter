@@ -13,7 +13,6 @@ const tabContents = document.querySelectorAll(".tab-content");
 const footerBtns = document.querySelectorAll(".footer-btn");
 const categoryBtns = document.querySelectorAll(".category-btn");
 
-// Initialize expenses from localStorage or empty array
 let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
 let currentFilter = "all";
 let currentTab = "expenses";
@@ -33,7 +32,7 @@ themeToggle.addEventListener("click", () => {
   }
 });
 
-// Check for saved theme preference
+// Apply saved theme
 if (localStorage.getItem("theme") === "dark") {
   document.documentElement.setAttribute("data-theme", "dark");
 }
@@ -57,6 +56,7 @@ addExpenseBtn.addEventListener("click", () => {
     expenses.push(newExpense);
     saveExpenses();
     renderExpenses();
+    renderChart(expenses);
 
     // Reset form
     expenseTitle.value = "";
@@ -72,38 +72,12 @@ function deleteExpense(id) {
   expenses = expenses.filter((expense) => expense.id !== id);
   saveExpenses();
   renderExpenses();
+  renderChart(expenses);
 }
 
-// Save expenses to localStorage
+// Save to localStorage
 function saveExpenses() {
   localStorage.setItem("expenses", JSON.stringify(expenses));
-}
-
-// Filter expenses by category
-function filterExpenses(category) {
-  currentFilter = category;
-  renderExpenses();
-}
-
-// Calculate total expenses
-function calculateTotal() {
-  const total = expenses.reduce((sum, expense) => sum + expense.amount, 0);
-  totalExpensesEl.textContent = `₹${total.toFixed(2)}`;
-
-  // Calculate this month's expenses
-  const currentMonth = new Date().getMonth();
-  const currentYear = new Date().getFullYear();
-  const monthExpenses = expenses
-    .filter((expense) => {
-      const expenseDate = new Date(expense.date);
-      return (
-        expenseDate.getMonth() === currentMonth &&
-        expenseDate.getFullYear() === currentYear
-      );
-    })
-    .reduce((sum, expense) => sum + expense.amount, 0);
-
-  monthExpensesEl.textContent = `₹${monthExpenses.toFixed(2)}`;
 }
 
 // Render expenses
@@ -125,20 +99,18 @@ function renderExpenses() {
       const expenseItem = document.createElement("div");
       expenseItem.className = "expense-item";
       expenseItem.innerHTML = `
-      <div class="expense-info">
-        <div class="expense-title">${expense.title}</div>
-        <div>
-          <span class="expense-category">${getCategoryName(
-            expense.category
-          )}</span>
-          <span class="expense-date">${formatDate(expense.date)}</span>
+        <div class="expense-info">
+          <div class="expense-title">${expense.title}</div>
+          <div>
+            <span class="expense-category">${getCategoryName(
+              expense.category
+            )}</span>
+            <span class="expense-date">${formatDate(expense.date)}</span>
+          </div>
         </div>
-      </div>
-      <div class="expense-amount">₹${expense.amount.toFixed(2)}</div>
-      <button class="delete-btn" onclick="deleteExpense(${
-        expense.id
-      })">✕</button>
-    `;
+        <div class="expense-amount">₹${expense.amount.toFixed(2)}</div>
+        <button class="delete-btn" onclick="deleteExpense(${expense.id})">✕</button>
+      `;
       expenseList.appendChild(expenseItem);
     });
   }
@@ -146,13 +118,13 @@ function renderExpenses() {
   calculateTotal();
 }
 
-// Helper function to format date
+// Format date
 function formatDate(dateString) {
   const options = { year: "numeric", month: "short", day: "numeric" };
   return new Date(dateString).toLocaleDateString("en-IN", options);
 }
 
-// Helper function to get category name
+// Get category name
 function getCategoryName(category) {
   const categories = {
     food: "Food",
@@ -168,61 +140,102 @@ function getCategoryName(category) {
   return categories[category] || category;
 }
 
-// Tab switching
-navTabs.forEach((tab) => {
-  tab.addEventListener("click", () => {
-    const tabId = tab.getAttribute("data-tab");
-    switchTab(tabId);
-  });
-});
+// Calculate totals
+function calculateTotal() {
+  const total = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+  totalExpensesEl.textContent = `₹${total.toFixed(2)}`;
 
-footerBtns.forEach((btn) => {
+  const currentMonth = new Date().getMonth();
+  const currentYear = new Date().getFullYear();
+  const monthExpenses = expenses
+    .filter((expense) => {
+      const date = new Date(expense.date);
+      return (
+        date.getMonth() === currentMonth && date.getFullYear() === currentYear
+      );
+    })
+    .reduce((sum, expense) => sum + expense.amount, 0);
+
+  monthExpensesEl.textContent = `₹${monthExpenses.toFixed(2)}`;
+}
+
+// Category filter
+categoryBtns.forEach((btn) => {
   btn.addEventListener("click", () => {
-    const tabId = btn.getAttribute("data-tab");
-    switchTab(tabId);
+    currentFilter = btn.getAttribute("data-category");
+    categoryBtns.forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+    renderExpenses();
   });
 });
 
+// Tab switching
 function switchTab(tabId) {
-  // Update active tab in navigation
   navTabs.forEach((tab) => {
-    if (tab.getAttribute("data-tab") === tabId) {
-      tab.classList.add("active");
-    } else {
-      tab.classList.remove("active");
-    }
+    tab.classList.toggle("active", tab.getAttribute("data-tab") === tabId);
   });
 
-  // Update active tab in footer
   footerBtns.forEach((btn) => {
-    if (btn.getAttribute("data-tab") === tabId) {
-      btn.classList.add("active");
-    } else {
-      btn.classList.remove("active");
-    }
+    btn.classList.toggle("active", btn.getAttribute("data-tab") === tabId);
   });
 
-  // Show/hide tab content
   tabContents.forEach((content) => {
-    if (content.id === `${tabId}-tab`) {
-      content.style.display = "block";
-    } else {
-      content.style.display = "none";
-    }
+    content.style.display = content.id === `${tabId}-tab` ? "block" : "none";
   });
 
   currentTab = tabId;
 }
 
-// Category filter buttons
-categoryBtns.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const category = btn.getAttribute("data-category");
-    categoryBtns.forEach((b) => b.classList.remove("active"));
-    btn.classList.add("active");
-    filterExpenses(category);
+// Tab event listeners
+navTabs.forEach((tab) => {
+  tab.addEventListener("click", () => {
+    switchTab(tab.getAttribute("data-tab"));
   });
 });
 
+footerBtns.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    switchTab(btn.getAttribute("data-tab"));
+  });
+});
+
+// Render chart
+function renderChart(expenses) {
+  const ctxPlaceholder = document.querySelector(".chart-placeholder");
+  if (!ctxPlaceholder) return;
+
+  // Clear existing chart
+  ctxPlaceholder.innerHTML = '<canvas id="expenseChart"></canvas>';
+  const ctx = document.getElementById("expenseChart").getContext("2d");
+
+  const categoryTotals = {};
+  expenses.forEach((exp) => {
+    categoryTotals[exp.category] =
+      (categoryTotals[exp.category] || 0) + parseFloat(exp.amount);
+  });
+
+  new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: Object.keys(categoryTotals).map(getCategoryName),
+      datasets: [
+        {
+          label: "Expenses by Category",
+          data: Object.values(categoryTotals),
+          backgroundColor: "rgba(67, 97, 238, 0.6)",
+          borderColor: "rgba(67, 97, 238, 1)",
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        y: { beginAtZero: true },
+      },
+    },
+  });
+}
+
 // Initial render
 renderExpenses();
+renderChart(expenses);
