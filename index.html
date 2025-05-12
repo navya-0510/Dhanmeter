@@ -1,143 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dhanmeter - Smart Expense Tracker</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
     <div class="container">
-      <header>
-        <div class="logo">Dhan<span>meter</span></div>
-        <button class="theme-toggle" id="theme-toggle">🌓</button>
-      </header>
+        <header>
+            <div class="logo">Dhan<span>meter</span></div>
+            <button class="theme-toggle" id="theme-toggle">🌓</button>
+        </header>
 
-      <div class="summary-cards">
-        <div class="summary-card total">
-          <h3>Total Expenses</h3>
-          <p id="total-expenses">₹0.00</p>
+        <div class="summary-cards">
+            <div class="summary-card total">
+                <h3>Total Expenses</h3>
+                <p id="total-expenses">₹0.00</p>
+            </div>
+            <div class="summary-card this-month">
+                <h3>This Month</h3>
+                <p id="month-expenses">₹0.00</p>
+            </div>
         </div>
-        <div class="summary-card this-month">
-          <h3>This Month</h3>
-          <p id="month-expenses">₹0.00</p>
+
+        <div class="nav-tabs">
+            <div class="nav-tab active" data-tab="expenses">Expenses</div>
+            <div class="nav-tab" data-tab="analytics">Analytics</div>
+            <div class="nav-tab" data-tab="categories">Categories</div>
         </div>
+
+        <!-- Expenses Tab -->
+        <div class="tab-content" id="expenses-tab">
+            <div class="card">
+                <h2 class="card-title">Add New Expense</h2>
+                <div class="form-group">
+                    <label for="expense-title">Title</label>
+                    <input type="text" id="expense-title" class="form-control" placeholder="Dinner, Groceries, etc.">
+                </div>
+                <div class="form-group">
+                    <label for="expense-amount">Amount (₹)</label>
+                    <input type="number" id="expense-amount" class="form-control" placeholder="0.00" min="0" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="expense-category">Category</label>
+                    <select id="expense-category" class="form-control">
+                        <option value="food">Food & Dining</option>
+                        <option value="transport">Transportation</option>
+                        <option value="shopping">Shopping</option>
+                        <option value="housing">Housing</option>
+                        <option value="entertainment">Entertainment</option>
+                        <option value="utilities">Utilities</option>
+                        <option value="health">Health</option>
+                        <option value="education">Education</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="expense-date">Date</label>
+                    <input type="date" id="expense-date" class="form-control">
+                </div>
+                <button class="btn btn-block" id="add-expense">Add Expense</button>
+            </div>
+
+            <div class="category-filter" id="category-filter">
+                <button class="category-btn active" data-category="all">All</button>
+                <button class="category-btn" data-category="food">Food</button>
+                <button class="category-btn" data-category="transport">Transport</button>
+                <button class="category-btn" data-category="shopping">Shopping</button>
+                <button class="category-btn" data-category="housing">Housing</button>
+                <button class="category-btn" data-category="entertainment">Entertainment</button>
+            </div>
+
+            <div class="expense-list" id="expense-list">
+                <div class="empty-state">
+                    <p>No expenses added yet. Add your first expense above!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Tab -->
+        <div class="tab-content" id="analytics-tab" style="display: none">
+            <div class="card">
+                <h2 class="card-title">Spending Analytics</h2>
+                <div class="chart-container">
+                    <canvas id="expenseChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categories Tab -->
+        <div class="tab-content" id="categories-tab" style="display: none">
+            <div class="card">
+                <h2 class="card-title">Category Breakdown</h2>
+                <div class="chart-container pie-chart-container">
+                    <canvas id="categoryPieChart"></canvas>
+                </div>
+                <div class="category-table-container">
+                    <table class="category-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Amount</th>
+                                <th>Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody id="category-table-body">
+                            <!-- Will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Replace the settings tab section with this -->
+<div class="tab-content" id="settings-tab" style="display: none">
+  <div class="settings-container">
+    <h2 class="card-title">Settings</h2>
+    
+    <div class="card">
+      <div class="form-group">
+        <label for="monthly-budget">Monthly Budget (₹)</label>
+        <input type="number" id="monthly-budget" class="form-control" placeholder="Enter your budget" min="0">
       </div>
+      <button class="btn btn-block" id="save-budget">Save Budget</button>
+    </div>
 
-      <div class="nav-tabs">
-        <div class="nav-tab active" data-tab="expenses">Expenses</div>
-        <div class="nav-tab" data-tab="analytics">Analytics</div>
-        <div class="nav-tab" data-tab="categories">Categories</div>
-      </div>
+    <div class="card">
+      <h3 class="card-subtitle">Data Management</h3>
+      <button class="btn btn-block" id="export-data">Export Expenses</button>
+      <button class="btn btn-block btn-danger" id="clear-data">Clear All Data</button>
+    </div>
 
-      <div class="tab-content" id="expenses-tab">
-        <div class="card">
-          <h2 class="card-title">Add New Expense</h2>
-          <div class="form-group">
-            <label for="expense-title">Title</label>
-            <input
-              type="text"
-              id="expense-title"
-              class="form-control"
-              placeholder="Dinner, Groceries, etc."
-            />
-          </div>
-          <div class="form-group">
-            <label for="expense-amount">Amount (₹)</label>
-            <input
-              type="number"
-              id="expense-amount"
-              class="form-control"
-              placeholder="0.00"
-            />
-          </div>
-          <div class="form-group">
-            <label for="expense-category">Category</label>
-            <select id="expense-category" class="form-control">
-              <option value="food">Food & Dining</option>
-              <option value="transport">Transportation</option>
-              <option value="shopping">Shopping</option>
-              <option value="housing">Housing</option>
-              <option value="entertainment">Entertainment</option>
-              <option value="utilities">Utilities</option>
-              <option value="health">Health</option>
-              <option value="education">Education</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="expense-date">Date</label>
-            <input type="date" id="expense-date" class="form-control" />
-          </div>
-          <button class="btn btn-block" id="add-expense">Add Expense</button>
-        </div>
-
-        <div class="category-filter" id="category-filter">
-          <button class="category-btn active" data-category="all">All</button>
-          <button class="category-btn" data-category="food">Food</button>
-          <button class="category-btn" data-category="transport">Transport</button>
-          <button class="category-btn" data-category="shopping">Shopping</button>
-          <button class="category-btn" data-category="housing">Housing</button>
-          <button class="category-btn" data-category="entertainment">Entertainment</button>
-        </div>
-
-        <div class="expense-list" id="expense-list">
-          <!-- Expenses will be added here dynamically -->
-        </div>
-      </div>
-
-      <div class="tab-content" id="analytics-tab" style="display: none">
-        <div class="card">
-          <h2 class="card-title">Spending Analytics</h2>
-          <div class="charts-container">
-            <canvas id="expenseChart" width="400" height="200"></canvas>
-          </div>
-        </div>
-      </div>
-
-      <div class="tab-content" id="categories-tab" style="display: none">
-        <div class="card">
-          <h2 class="card-title">Category Management</h2>
-          <p>View and manage your expense categories</p>
-          <!-- Category management content would go here -->
-        </div>
+    <div class="card">
+      <h3 class="card-subtitle">Appearance</h3>
+      <div class="theme-options">
+        <button class="theme-option-btn" data-theme="light">
+          <span class="theme-icon">☀</span>
+          Light Mode
+        </button>
+        <button class="theme-option-btn" data-theme="dark">
+          <span class="theme-icon">🌙</span>
+          Dark Mode
+        </button>
       </div>
     </div>
 
-    <div class="tab-content" id="settings-tab" style="display: none">
-      <div class="settings-container">
-        <h2 class="card-title">Settings</h2>
-
-        <div class="form-group">
-          <label for="monthly-budget">Monthly Budget (₹)</label>
-          <input
-            type="number"
-            id="monthly-budget"
-            class="form-control"
-            placeholder="e.g., 15000"
-          />
-          <button class="btn" id="save-budget">Save Budget</button>
-        </div>
-
-        <div class="form-group">
-          <label>Theme</label>
-          <button class="btn" id="toggle-theme">Toggle Light/Dark Mode</button>
-        </div>
-
-        <div class="form-group">
-          <label>Data</label>
-          <button class="btn btn-danger" id="clear-data">Clear All Expenses</button>
-        </div>
-      </div>
+    <div id="budget-warning" class="budget-warning hidden">
+      <div class="warning-icon">⚠</div>
+      <div class="warning-text">You've exceeded your monthly budget!</div>
     </div>
+  </div>
+</div>
 
+    <!-- Footer with increased size -->
     <footer>
-      <button class="footer-btn active" data-tab="expenses">📝</button>
-      <button class="footer-btn" data-tab="analytics">📊</button>
-      <button class="footer-btn" data-tab="categories">🗂️</button>
-      <button class="footer-btn" data-tab="settings">⚙️</button>
+        <button class="footer-btn active" data-tab="expenses">
+            <span class="footer-icon">📝</span>
+            <span class="footer-label">Expenses</span>
+        </button>
+        <button class="footer-btn" data-tab="analytics">
+            <span class="footer-icon">📊</span>
+            <span class="footer-label">Analytics</span>
+        </button>
+        <button class="footer-btn" data-tab="categories">
+            <span class="footer-icon">🗂</span>
+            <span class="footer-label">Categories</span>
+        </button>
+        <button class="footer-btn" data-tab="settings">
+            <span class="footer-icon">⚙</span>
+            <span class="footer-label">Settings</span>
+        </button>
     </footer>
 
-    <!-- Chart.js and your main script -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
-  </body>
+</body>
 </html>
