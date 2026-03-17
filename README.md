@@ -38,14 +38,13 @@ A simple, lightweight personal finance tracker that helps you manage your daily 
 2. Open `index.html` in your browser.
 3. Start tracking your expenses!
 
-## 🌟 Contributing
+## 🚀 Future Enhancements
 
-Contributions are welcome! Please fork the repo and submit a pull request with your improvements.
+Planned improvements to make the tracker more powerful and scalable:
 
-## ✅ License
+* User authentication and account-based data storage
+* Backend integration (Node.js / Firebase) for real-time syncing across devices
 
-This project is licensed under the MIT License. See the `LICENSE` file for details.
 
----
 
 Built with ❤️ by \navya-0510
