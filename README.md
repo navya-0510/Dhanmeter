@@ -44,7 +44,8 @@ Planned improvements to make the tracker more powerful and scalable:
 
 * User authentication and account-based data storage
 * Backend integration (Node.js / Firebase) for real-time syncing across devices
-
+* Advanced analytics with charts (monthly trends, category breakdowns)
+* Export reports as PDF/CSV for financial tracking
 
 
 Built with ❤️ by \navya-0510
